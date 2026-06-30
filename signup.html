@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #121212;
+            position: relative;
+        }
+
+        /* 🎬 Animated Spotify Background */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(
+                45deg,
+                #1DB954,
+                #191414,
+                #1ed760,
+                #0f0f0f,
+                #1DB954
+            );
+            animation: moveBg 12s linear infinite;
+            opacity: 0.25;
+            z-index: 0;
+        }
+
+        @keyframes moveBg {
+            0% { transform: translate(-25%, -25%) rotate(0deg); }
+            100% { transform: translate(-25%, -25%) rotate(360deg); }
+        }
+
+        /* 📦 Form */
+        .signup-container {
+            background: #181818;
+            padding: 30px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1DB954;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 13px;
+            margin-top: 10px;
+            display: block;
+            color: #b3b3b3;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #282828;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border: 1px solid #1DB954;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #1DB954;
+            border: none;
+            border-radius: 25px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1ed760;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        a:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="signup-container">
+
+    <h2>Sign Up</h2>
+
+    <form id="signupForm">
+
+        <label>Username</label>
+        <input type="text" id="username" required>
+
+        <label>Phone Number</label>
+        <input type="tel" id="phone" required>
+
+        <label>Email</label>
+        <input type="email" id="email" required>
+
+        <label>Password</label>
+        <input type="password" id="password" required>
+
+        <label>Confirm Password</label>
+        <input type="password" id="confirmPassword" required>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <a href="index.html">Back to Home</a>
+
+</div>
+
+<script>
+const form = document.getElementById("signupForm");
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    // ❌ Check password match
+    if(password !== confirmPassword){
+        alert("Passwords do not match ❌");
+        return;
+    }
+
+    // 📦 user object
+    const user = {
+        username,
+        phone,
+        email,
+        password
+    };
+
+    // 💾 save in localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // ❌ prevent duplicate email
+    const exists = users.find(u => u.email === email);
+    if(exists){
+        alert("Email already exists ❌");
+        return;
+    }
+
+    users.push(user);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Account created successfully 🎉");
+
+    // 🔁 redirect
+    window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
